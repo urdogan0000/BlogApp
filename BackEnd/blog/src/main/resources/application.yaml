@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: "Blog"
+  datasource:
+    url: jdbc:postgresql://localhost:5432/blog
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+springdoc:
+  swagger-ui:
+    path: /custom-docs
