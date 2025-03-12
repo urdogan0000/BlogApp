@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ErrorResponse {
 
     private String status;
+    private Integer statusCode;
     private String message;
 
 

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -22,5 +23,7 @@ public class BlogRequestDto {
     private String description;
 
     private UUID ownerId;
+
+    private Date createdAt=new Date();
 }
 

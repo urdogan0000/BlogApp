@@ -9,8 +9,11 @@ public class BlogMapper {
     public static Blog toEntity(BlogRequestDto blogRequestDto) {
         Blog blog = new Blog();
         // Map fields directly
+        blog.setOwnerId(blogRequestDto.getOwnerId());
         blog.setTitle(blogRequestDto.getTitle());
         blog.setDescription(blogRequestDto.getDescription());
+        blog.setCreatedAt(blogRequestDto.getCreatedAt());
+        blog.setUpdatedAt(blogRequestDto.getCreatedAt());
 
         // Return the entity
         return blog;

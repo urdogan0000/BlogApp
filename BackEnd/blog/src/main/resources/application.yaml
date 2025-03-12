@@ -7,9 +7,9 @@ spring:
     password: admin
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
+    open-in-view: false
 springdoc:
   swagger-ui:
     path: /custom-docs
