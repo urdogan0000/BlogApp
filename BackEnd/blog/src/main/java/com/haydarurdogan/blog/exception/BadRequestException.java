@@ -1,8 +1,9 @@
 package com.haydarurdogan.blog.exception;
 
-public class BadRequestException extends RuntimeException {
+import org.springframework.http.HttpStatus;
 
-    public BadRequestException(String message) {
-        super(message);
+public class BadRequestException extends BaseException {
+    public BadRequestException() {
+        super(ErrorCode.BAD_REQUEST, HttpStatus.BAD_REQUEST);
     }
 }

@@ -1,17 +1,26 @@
 package com.haydarurdogan.blog.dto;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@AllArgsConstructor
 public class ErrorResponse {
+    private final String errorType;
+    private final int errorCode;
+    private final String message;
+    private final String details; // Extra field for additional info
 
-    private String status;
-    private Integer statusCode;
-    private String message;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private final LocalDateTime timestamp;
 
+    public ErrorResponse(String errorType, int errorCode, String message, String details) {
+        this.errorType = errorType;
+        this.errorCode = errorCode;
+        this.message = message;
+        this.details = details;
+        this.timestamp = LocalDateTime.now();
+    }
 
 }

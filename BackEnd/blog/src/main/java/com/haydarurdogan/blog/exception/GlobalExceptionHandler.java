@@ -3,7 +3,8 @@ package com.haydarurdogan.blog.exception;
 import com.haydarurdogan.blog.dto.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,48 +13,29 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private final MessageSource messageSource;
 
-    /**
-     * Handles BadRequestException (400).
-     */
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex) {
-        logger.warn("Bad Request: {}", ex.getMessage());
-        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, "BAD_REQUEST");
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 
-    /**
-     * Handles NotFoundException (404).
-     */
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFoundRequest(NotFoundException ex) {
-        logger.warn("Resource Not Found: {}", ex.getMessage());
-        return buildErrorResponse(ex, HttpStatus.NOT_FOUND, "NOT_FOUND");
-    }
+    @ExceptionHandler(BaseException.class)
+    public ResponseEntity<ErrorResponse> handleCustomException(BaseException ex) {
+        logger.warn("Handled exception: {} - Params: {}", ex.getErrorCode().name(), ex.getParams());
 
-    /**
-     * Handles InternalServerErrorException (500).
-     */
-    @ExceptionHandler(InternalServerErrorException.class)
-    public ResponseEntity<ErrorResponse> handleInternalServerError(InternalServerErrorException ex) {
-        logger.error("Internal Server Error: {}", ex.getMessage(), ex);
-        return buildErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR");
-    }
+        String localizedMessage = messageSource.getMessage(
+                ex.getErrorCode().getMessageKey(),
+                ex.getParams() != null ? ex.getParams().toArray() : null,
+                LocaleContextHolder.getLocale()
+        );
 
-    /**
-     * Generic handler for unexpected exceptions (500).
-     */
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        logger.error("Unexpected error occurred: {}", ex.getMessage(), ex);
-        return buildErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR, "INTERNAL_SERVER_ERROR");
-    }
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getErrorCode().name(),
+                ex.getErrorCode().getCode(),
+                localizedMessage,
+                null
+        );
 
-    /**
-     * Utility method to build error response.
-     */
-    private ResponseEntity<ErrorResponse> buildErrorResponse(Exception ex, HttpStatus status, String errorCode) {
-        ErrorResponse errorResponse = new ErrorResponse(errorCode, status.value(), ex.getMessage());
-        return new ResponseEntity<>(errorResponse, status);
+        return new ResponseEntity<>(errorResponse, ex.getStatus());
     }
 }

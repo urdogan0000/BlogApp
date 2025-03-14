@@ -30,7 +30,8 @@ public class BlogService {
     @Transactional
     public Blog findBlogById(UUID blogId) {
         return blogRepository.findById(blogId)
-                .orElseThrow(() -> new NotFoundException("Blog not found"));  // Custom exception for better error handling
+                //.orElseThrow(() -> new BlogNotFoundException(blogId.toString()));
+         .orElseThrow(() -> new NotFoundException("Blog not found"));
     }
 
     @Transactional

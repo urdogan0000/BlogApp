@@ -1,6 +1,9 @@
 spring:
   application:
     name: "Blog"
+  messages:
+    basename: messages
+    encoding: utf-8
   datasource:
     url: jdbc:postgresql://localhost:5432/blog
     username: admin
