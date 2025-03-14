@@ -1,12 +1,14 @@
 package com.haydarurdogan.blog.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import java.util.List;
 
+@Getter
 public abstract class BaseException extends RuntimeException {
     private final ErrorCode errorCode;
     private final HttpStatus status;
-    private final List<Object> params;  // Dynamic params for i18n placeholders
+    private final List<Object> params;
 
     protected BaseException(ErrorCode errorCode, HttpStatus status, List<Object> params) {
         super(errorCode.name());
@@ -19,7 +21,4 @@ public abstract class BaseException extends RuntimeException {
         this(errorCode, status, null);
     }
 
-    public ErrorCode getErrorCode() { return errorCode; }
-    public HttpStatus getStatus() { return status; }
-    public List<Object> getParams() { return params; }
 }

@@ -2,7 +2,6 @@ package com.haydarurdogan.blog.service;
 
 import com.haydarurdogan.blog.entity.Blog;
 import com.haydarurdogan.blog.exception.BlogNotFoundException;
-import com.haydarurdogan.blog.exception.NotFoundException;
 import com.haydarurdogan.blog.repository.BlogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,8 +29,8 @@ public class BlogService {
     @Transactional
     public Blog findBlogById(UUID blogId) {
         return blogRepository.findById(blogId)
-                //.orElseThrow(() -> new BlogNotFoundException(blogId.toString()));
-         .orElseThrow(() -> new NotFoundException("Blog not found"));
+                .orElseThrow(() -> new BlogNotFoundException(blogId.toString()));
+
     }
 
     @Transactional

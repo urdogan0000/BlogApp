@@ -39,7 +39,6 @@ public class BlogController {
     @GetMapping("/{id}")
     public ResponseEntity<Blog> getBlogById(@PathVariable UUID id) {
         Blog existingBlog = blogService.findBlogById(id);
-        if (existingBlog == null) {}
         return ResponseEntity.ok(existingBlog);
     }
 
